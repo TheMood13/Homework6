@@ -11,14 +11,32 @@ int Sum_Complement(std::string clArgument2asString) {
   return SumOfArgument2_ASCII;
 }
 
-int condition(int SumOfArgument2_ASCII, char clArgument2,
-              std::size_t size_clArgument1) {
+int condition(int SumOfArgument2_ASCII, char clArgument2, std::size_t size_clArgument1) {
   return (SumOfArgument2_ASCII ^ clArgument2 * 3) << (size_clArgument1 & 0x1f);
 };
 
 
 int main(int N_of_Arguments, char *commandLineArguments[]) {
-  if (N_of_Arguments == 3) {
+  
+  if (N_of_Arguments != 3) {
+    std::cout << "Invalid Number of Arguments. Program can only take 2 arguments:\n";
+    std::cout << "Example of using program: program_name argument1 key\n";
+    
+    if (N_of_Arguments > 3) {
+    std::string clArgument1{commandLineArguments[0]};
+    auto clArgument2{*(commandLineArguments[1])};
+    auto size_clArgument1{clArgument1.size()};
+
+    std::string clArgument2asString{commandLineArguments[1]};
+    auto SumOfArgument2_ASCII = Sum_Complement(clArgument2asString);
+
+    std::cout << "Calculated checksum: " << SumOfArgument2_ASCII << std::endl;
+    std::cout << "Expected key: " << condition(SumOfArgument2_ASCII, clArgument2, size_clArgument1) << std::endl;
+
+    }
+  }
+  
+  else {
     std::string clArgument1{commandLineArguments[0]};
     auto clArgument2{*(commandLineArguments[1])};
     auto size_clArgument1{clArgument1.size()};
@@ -31,6 +49,8 @@ int main(int N_of_Arguments, char *commandLineArguments[]) {
       std::cout << "Correct!" << std::endl;
     } else {
       std::cout << "Wrong!" << std::endl;
+      std::cout << "Calculated checksum: " << SumOfArgument2_ASCII << std::endl;
+      std::cout << "Expected key: " << condition(SumOfArgument2_ASCII, clArgument2, size_clArgument1) << std::endl;
     }
   }
 }
